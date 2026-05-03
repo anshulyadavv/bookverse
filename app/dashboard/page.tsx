@@ -49,13 +49,13 @@ export default async function DashboardPage() {
   const { user, books, progress, sessions } = await getData(userId, userName, imageUrl);
 
   // Serialize for client components
-  const serializedBooks: Book[] = books.map((b) => ({
+  const serializedBooks: Book[] = books.map((b: (typeof books)[number]) => ({
     ...b,
     genres: JSON.parse(b.genres || "[]"),
     createdAt: b.createdAt.toISOString(),
   }));
 
-  const serializedProgress: ReadingProgress[] = progress.map((p) => ({
+  const serializedProgress: ReadingProgress[] = progress.map((p: (typeof progress)[number]) => ({
     ...p,
     updatedAt: p.updatedAt.toISOString(),
     book: p.book
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
       : undefined,
   }));
 
-  const serializedSessions: ReadingSession[] = sessions.map((s) => ({
+  const serializedSessions: ReadingSession[] = sessions.map((s: (typeof sessions)[number]) => ({
     ...s,
     date: s.date.toISOString(),
     startedAt: s.startedAt?.toISOString() ?? null,

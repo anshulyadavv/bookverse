@@ -46,7 +46,7 @@ export default async function BookmarksPage() {
               </div>
             ) : (
               <div className="grid gap-4">
-                {bookmarks.map((b) => (
+                {bookmarks.map((b: (typeof bookmarks)[number]) => (
                   <Link href={`/reader/${b.bookId}`} key={b.id}>
                     <div className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex items-center gap-4 group">
                       <div className="relative w-12 h-16 rounded overflow-hidden shrink-0 bg-gray-200">
@@ -73,7 +73,7 @@ export default async function BookmarksPage() {
               </div>
             ) : (
               <div className="grid gap-4">
-                {highlights.map((h) => (
+                {highlights.map((h: (typeof highlights)[number]) => (
                   <Link href={`/reader/${h.bookId}`} key={h.id}>
                     <div className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                       <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: h.color }} />

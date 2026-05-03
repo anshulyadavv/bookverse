@@ -24,10 +24,10 @@ export default async function ActivityPage() {
   ]);
 
   // Aggregate Metrics
-  const totalSeconds = sessions.reduce((acc: number, s: any) => acc + s.duration, 0);
+  const totalSeconds = sessions.reduce((acc: number, s: (typeof sessions)[number]) => acc + s.duration, 0);
   const totalMinutes = Math.floor(totalSeconds / 60);
   
-  const totalPagesRead = progress.reduce((acc: number, p: any) => acc + p.currentPage, 0);
+  const totalPagesRead = progress.reduce((acc: number, p: (typeof progress)[number]) => acc + p.currentPage, 0);
   const pagesPerMin = totalMinutes > 0 ? (totalPagesRead / totalMinutes).toFixed(1) : "0.0";
 
   // Categorize Books
@@ -35,8 +35,8 @@ export default async function ActivityPage() {
   const reading: (Book & { progressPct: number, timeSpent: number })[] = [];
   const completed: Book[] = [];
 
-  books.forEach((book: any) => {
-    const prog = progress.find((p: any) => p.bookId === book.id);
+  books.forEach((book: (typeof books)[number]) => {
+    const prog = progress.find((p: (typeof progress)[number]) => p.bookId === book.id);
     if (!prog || prog.progress === 0) {
       tbr.push(book);
     } else if (prog.progress > 0 && prog.progress < 1) {
@@ -55,8 +55,8 @@ export default async function ActivityPage() {
     nextD.setDate(nextD.getDate() + 1);
 
     const daySeconds = sessions
-      .filter((s: any) => new Date(s.date) >= d && new Date(s.date) < nextD)
-      .reduce((total: number, s: any) => total + s.duration, 0);
+      .filter((s: (typeof sessions)[number]) => new Date(s.date) >= d && new Date(s.date) < nextD)
+      .reduce((total: number, s: (typeof sessions)[number]) => total + s.duration, 0);
 
     return {
       date: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
