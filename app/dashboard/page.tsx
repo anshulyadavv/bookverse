@@ -74,7 +74,15 @@ export default async function DashboardPage() {
     endedAt: s.endedAt?.toISOString() ?? null,
   }));
 
-  const currentBook = serializedProgress.find((p) => p.progress > 0 && p.progress < 1) ?? serializedProgress[0] ?? null;
+  type ProgressWithBook = ReadingProgress & { book: Book };
+  const progressWithBook = serializedProgress.filter(
+    (p): p is ProgressWithBook => p.book != null
+  );
+
+  const currentBook: ProgressWithBook | null =
+    progressWithBook.find((p) => p.progress > 0 && p.progress < 1) ??
+    progressWithBook[0] ??
+    null;
 
   return (
     <div className="flex h-screen bg-[#F3EFE9] overflow-hidden">
