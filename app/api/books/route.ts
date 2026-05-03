@@ -19,22 +19,22 @@ export async function GET(req: NextRequest) {
     let filtered = books;
 
     if (genre) {
-      filtered = filtered.filter((b) => {
+      filtered = filtered.filter((b: any) => {
         const genres: string[] = JSON.parse(b.genres || "[]");
-        return genres.some((g) => g.toLowerCase().includes(genre.toLowerCase()));
+        return genres.some((g: any) => g.toLowerCase().includes(genre.toLowerCase()));
       });
     }
 
     if (search) {
       const q = search.toLowerCase();
       filtered = filtered.filter(
-        (b) =>
+        (b: any) =>
           b.title.toLowerCase().includes(q) ||
           b.author.toLowerCase().includes(q)
       );
     }
 
-    const result = filtered.map((b) => ({
+    const result = filtered.map((b: any) => ({
       ...b,
       genres: JSON.parse(b.genres || "[]"),
       createdAt: b.createdAt.toISOString(),
