@@ -64,7 +64,7 @@ export function EPUBReader({ epubUrl, bookId, initialCfi, onLocationChange, onRe
         containerRef.current.innerHTML = ""; // Clear existing iframes
       }
       const ePub = (await import("epubjs")).default;
-      const book = ePub(epubUrl) as EpubBook;
+      const book = ePub(epubUrl) as unknown as EpubBook;
       bookRef.current = book;
 
       const rendition = book.renderTo(containerRef.current, {
