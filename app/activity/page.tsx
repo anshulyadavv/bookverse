@@ -35,8 +35,8 @@ export default async function ActivityPage() {
   const reading: (Book & { progressPct: number, timeSpent: number })[] = [];
   const completed: Book[] = [];
 
-  books.forEach((book) => {
-    const prog = progress.find((p) => p.bookId === book.id);
+  books.forEach((book: any) => {
+    const prog = progress.find((p: any) => p.bookId === book.id);
     if (!prog || prog.progress === 0) {
       tbr.push(book);
     } else if (prog.progress > 0 && prog.progress < 1) {
