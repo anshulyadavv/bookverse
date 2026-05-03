@@ -13,7 +13,7 @@ export async function GET(
       orderBy: { updatedAt: "desc" },
     });
 
-    const result = progress.map((p) => ({
+    const result = progress.map((p: (typeof progress)[number]) => ({
       ...p,
       updatedAt: p.updatedAt.toISOString(),
       book: p.book
