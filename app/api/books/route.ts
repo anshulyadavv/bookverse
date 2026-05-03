@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
             epub.on("end", () => {
               const coverId = epub.metadata.cover;
               if (coverId) {
-                epub.getImage(coverId, async (err: any, data: Buffer, mimeType: string) => {
+                epub.getImage(coverId, async (err: any, data: any, mimeType: any) => {
                   if (!err && data) {
                     try {
                       const coverBlob = await put(`cover_${Date.now()}`, data, { access: 'public', contentType: mimeType });
