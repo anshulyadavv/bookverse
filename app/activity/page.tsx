@@ -36,15 +36,21 @@ export default async function ActivityPage() {
   const completed: Book[] = [];
 
   books.forEach((book: (typeof books)[number]) => {
+    const serializedBook: Book = {
+      ...book,
+      genres: JSON.parse(book.genres || "[]"),
+      createdAt: book.createdAt.toISOString(),
+    };
     const prog = progress.find((p: (typeof progress)[number]) => p.bookId === book.id);
     if (!prog || prog.progress === 0) {
-      tbr.push(book);
+      tbr.push(serializedBook);
     } else if (prog.progress > 0 && prog.progress < 1) {
-      reading.push({ ...book, progressPct: prog.progress, timeSpent: prog.timeSpent });
+      reading.push({ ...serializedBook, progressPct: prog.progress, timeSpent: prog.timeSpent });
     } else {
-      completed.push(book);
+      completed.push(serializedBook);
     }
   });
+
 
   // Chart Data (Last 14 Days)
   const chartData = Array.from({ length: 14 }).map((_, i) => {

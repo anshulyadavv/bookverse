@@ -21,12 +21,16 @@ type EpubBook = {
     locationFromCfi: (cfi: string) => { start: { location: number } };
     total: number;
   };
+  getRange: (cfi: string) => Promise<Range | null>;
 };
 
 type EpubRendition = {
   display: (target?: string) => Promise<void>;
   next: () => Promise<void>;
   prev: () => Promise<void>;
+  resize: () => void;
+  currentLocation: () => { start: { cfi: string; index: number } } | null;
+  getRange: (cfi: string) => Range | null;
   on: (event: string, cb: (...args: unknown[]) => void) => void;
   off: (event: string, cb: (...args: unknown[]) => void) => void;
   themes: {
@@ -34,6 +38,7 @@ type EpubRendition = {
     select: (theme: string) => void;
     register: (name: string, styles: object) => void;
     fontSize: (size: string) => void;
+    override: (property: string, value: string, priority?: boolean) => void;
   };
   destroy: () => void;
 };
@@ -178,8 +183,9 @@ export function EPUBReader({ epubUrl, bookId, initialCfi, onLocationChange, onRe
       rendition.on("relocated", onRelocated);
 
       // Highlighting logic
-      const onSelected = (cfiRange: string, contents: any) => {
-        const selection = contents.window.getSelection();
+      const onSelected = (...args: unknown[]) => {
+        const [cfiRange, contents] = args as [string, { window: Window }];
+        const selection = (contents.window as Window).getSelection();
         if (selection && selection.rangeCount > 0) {
           const range = selection.getRangeAt(0);
           const rect = range.getBoundingClientRect();
