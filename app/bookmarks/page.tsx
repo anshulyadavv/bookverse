@@ -22,8 +22,8 @@ export default async function BookmarksPage() {
 
   const annotations = await getBookmarks(userId);
 
-  const bookmarks = annotations.filter((a) => a.color === "bookmark");
-  const highlights = annotations.filter((a) => a.color !== "bookmark");
+  const bookmarks = annotations.filter((a: (typeof annotations)[number]) => a.color === "bookmark");
+  const highlights = annotations.filter((a: (typeof annotations)[number]) => a.color !== "bookmark");
 
   return (
     <div className="flex h-screen bg-[#F3EFE9] overflow-hidden">
