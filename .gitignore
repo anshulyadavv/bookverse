@@ -27,7 +27,7 @@
 .CLAUDE.md
 
 # local book storage (prevent copyright strike)
-bookstore/
+store/Book Store/
 public/uploads/
 
 # debug
