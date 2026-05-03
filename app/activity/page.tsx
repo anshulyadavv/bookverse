@@ -24,10 +24,10 @@ export default async function ActivityPage() {
   ]);
 
   // Aggregate Metrics
-  const totalSeconds = sessions.reduce((acc, s) => acc + s.duration, 0);
+  const totalSeconds = sessions.reduce((acc: number, s) => acc + s.duration, 0);
   const totalMinutes = Math.floor(totalSeconds / 60);
   
-  const totalPagesRead = progress.reduce((acc, p) => acc + p.currentPage, 0);
+  const totalPagesRead = progress.reduce((acc: number, p) => acc + p.currentPage, 0);
   const pagesPerMin = totalMinutes > 0 ? (totalPagesRead / totalMinutes).toFixed(1) : "0.0";
 
   // Categorize Books
