@@ -6,7 +6,7 @@ import type { ReadingProgress, ReadingSession, User, Book } from "@/types";
 import { useState, useRef, useEffect } from "react";
 
 interface Props {
-  currentBook: ReadingProgress | null;
+  currentBook: (ReadingProgress & { book: Book }) | null;
   sessions: ReadingSession[];
   user: User;
   isMobile?: boolean;

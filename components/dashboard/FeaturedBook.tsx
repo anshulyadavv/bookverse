@@ -3,14 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
-import type { ReadingProgress } from "@/types";
+import type { ReadingProgress, Book } from "@/types";
 
 interface Props {
-  currentBook: ReadingProgress | null;
+  currentBook: (ReadingProgress & { book: Book }) | null;
 }
 
 export function FeaturedBook({ currentBook }: Props) {
-  if (!currentBook) return null;
+  if (!currentBook || !currentBook.book) return null;
 
   const rawText = currentBook.lastExcerpt || currentBook.book.description || "You are currently making great progress in this story. Continue reading to discover what happens next in this immersive world.";
   const cleanText = rawText.replace(/<[^>]*>?/gm, '').replace(/^["'\s]+|["'\s]+$/g, '');

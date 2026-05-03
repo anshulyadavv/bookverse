@@ -1,10 +1,10 @@
 "use client";
-import type { ReadingProgress } from "@/types";
+import type { ReadingProgress, Book } from "@/types";
 import { useEffect, useState } from "react";
 
 interface Props {
   userName: string;
-  currentBook?: ReadingProgress | null;
+  currentBook?: (ReadingProgress & { book: Book }) | null;
 }
 
 export function HeaderGreeting({ userName, currentBook }: Props) {
@@ -25,7 +25,7 @@ export function HeaderGreeting({ userName, currentBook }: Props) {
       </h1>
       <p className="text-[#8C7A6B] text-sm mt-2 font-medium tracking-wide">
         {currentBook 
-          ? `Continuing your journey through ${currentBook.book.title}.`
+          ? `Continuing your journey through ${currentBook.book?.title}.`
           : "Discover your next great adventure."}
       </p>
     </div>
