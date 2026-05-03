@@ -1,0 +1,21 @@
+# Codebase Review & Outstanding Issues
+
+## 1. Authentication & User Data
+- **Hardcoded User**: The application relies on a hardcoded `"guest"` user ID and name in `app/dashboard/page.tsx`, `app/reader/[bookId]/page.tsx`, and API routes. No authentication system (NextAuth/Clerk) is implemented.
+- **Hardcoded Avatar**: `RightPanel.tsx` uses a hardcoded DiceBear URL for the user's profile picture, ignoring the `avatar` field present in the Prisma schema.
+
+## 2. Reading Progress API Bug (CRITICAL)
+- **Zero Duration Bug**: In `app/api/progress/route.ts`, reading duration is updated via `Math.floor(timeSpentDelta / 60)`. Because the reader client sends progress updates frequently in small increments (e.g., 5 seconds per page turn), the result of `5/60` is `0`. Reading session durations are silently failing to accumulate properly.
+
+## 3. Data Persistence (Deployment Risk)
+- **Local File Uploads**: `app/api/books/route.ts` saves EPUBs and cover images to the local `public/uploads` folder. If deployed to a serverless environment like Vercel, this ephemeral filesystem will wipe uploaded books on every cold start. Must migrate to an S3 bucket or Blob storage.
+
+## 4. UI Placeholders & Mock Data
+- **Incomplete Pages**: The `/activity` and `/bookmarks` pages are currently empty placeholders displaying "Coming soon".
+- **Mock Activity Chart**: The bar chart in `RightPanel.tsx` uses hardcoded data arrays (`const activityData = [30, 45, 20, 60, 52, 40, todayMins]`) rather than pulling historical sessions from the database.
+- **Mock Calendar**: The Calendar component in `RightPanel.tsx` uses hardcoded math (`[22 + i]`) instead of dynamically rendering the correct current calendar dates.
+
+## 5. Reader Component Issues
+- **Dead Toolbar Callbacks**: The `ReaderToolbar` receives empty dummy functions (`onPrev={() => {}}`, `onNext={() => {}}`) from `app/reader/[bookId]/page.tsx`, rendering potential toolbar navigation buttons useless.
+- **Unused Store Logic**: The `startTimer` and `stopTimer` actions exist in `readerStore.ts` but are completely unused by the reader component.
+- **Page Turn Animations**: EPUB transitions are currently a simple slide/fade on the container rather than a native 3D page-curl effect (which is a known limitation of default epub.js).
